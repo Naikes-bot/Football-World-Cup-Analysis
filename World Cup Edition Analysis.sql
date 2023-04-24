@@ -1,17 +1,21 @@
 
--- The number of time countries have won the World Cup
+-- 1) The number of time countries have won the World Cup
 Select Winner, COUNT(*) AS times_won
 FROM `World Cup`.world_cups
 GROUP BY Winner
 ORDER BY times_won DESC; 
 
--- Maximum number of goals across world cups and where was it?
+
+
+--2) Maximum number of goals across world cups and where was it?
 Select host_country, Year, MAX(Goals_Scored)AS maximum_goals
 FROM `World Cup`.world_cups
 GROUP BY host_country, Year
 ORDER BY maximum_goals DESC;
 
--- What is the average goals scored in world cups? Which are the host countries that are 
+
+
+--3) What is the average goals scored in world cups? Which are the host countries that are 
 -- below and above average goals scored
 WITH cte AS (Select Host_country, AVG(Goals_scored) AS avg_goalscored
 FROM `World Cup`.world_cups
@@ -25,25 +29,27 @@ Select Host_country,
 FROM `World Cup`.world_cups
 GROUP BY Host_country; 
 
--- Which country has finished runners up the most?
+
+
+--4) Which country has finished runners up the most?
 Select Runners_up, COUNT(*) AS total
 FROM `World Cup`.world_cups
 GROUP BY Runners_up
 ORDER BY total DESC;
 
--- Total number of home goals & away goals from 1930 - 2018
+--5) Total number of home goals & away goals from 1930 - 2018
 Select Year, 
 	   SUM(home_goals) AS total_homegoals, 
        SUM(away_goals) AS total_awaygoals
 FROM `World Cup`.matches
 GROUP BY Year;
 
--- Which World cup edition did the host country win the Cup?
+--6) Which World cup edition did the host country win the Cup?
 Select Year, Host_country, Winner
 FROM`World Cup`.world_cups
 WHERE Host_country = winner; 
 
--- Provide the total home and away goals per World Cup edition
+--7) Provide the total home and away goals per World Cup edition
 Select Year, 
        SUM(home_goals) AS total_homegoals, 
 	   SUM(away_goals) As total_awaygoals,
@@ -51,7 +57,7 @@ Select Year,
 FROM `World Cup`.matches
 GROUP BY Year;
 
--- Which team has the most semifinals appearance from 1930 - 2018 
+--8) Which team has the most semifinals appearance from 1930 - 2018 
 SELECT home_team, 
        away_team,
 	   COUNT(*) AS num_semifinals
@@ -61,13 +67,13 @@ GROUP BY home_team, away_team
 ORDER BY num_semifinals DESC
 LIMIT 1;
 
--- Extra time per Round 
+--9) Extra time per Round 
 Select stage, COUNT(*) AS count_of_matches
 FROM `World Cup`.matches
 WHERE win_conditions = 'Extra time'
 GROUP BY stage; 
 
--- What is the AVG goals per match across all the world Cup editions
+--10) What is the AVG goals per match across all the world Cup editions
 SELECT Year, 
        Host_Country,
        Matches_Played,
@@ -75,24 +81,4 @@ SELECT Year,
 FROM `World Cup`.world_cups
 GROUP BY Year, Matches_Played, Host_Country, (Goals_scored/Matches_played)
 ORDER BY goals_per_match DESC;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
